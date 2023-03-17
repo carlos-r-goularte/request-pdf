@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Download de Certificados</title>
+</head>
+<body>
+    <h1>Download de Certificados</h1>
+    <form id="form" method="POST">
+        <label for="numero_lote">Número do Lote:</label>
+        <input type="text" id="numero_lote" name="numero_lote" required>
+        <br>
+        <input type="submit" value="Baixar Certificado">
+    </form>
+
+    <script>
+        const form = document.getElementById('form');
+        form.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const numeroLote = document.getElementById('numero_lote').value;
+            const response = await fetch(`/download-certificado?numero_lote=${numeroLote}`);
+            const blob = await response.blob();
+            const url = URL.createObjectURL(blob);
+
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `${numeroLote}.pdf`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+    </script>
+</body>
+</html>
